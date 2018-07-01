@@ -19,7 +19,8 @@ class ToDos extends Component {
   }
   state = {
     toDos: new Map(),
-    notification: "Loading"
+    notification: "Loading",
+    isLoading: true
   };
   componentWillMount() {
     this.userDetails = this.props.location
@@ -47,7 +48,8 @@ class ToDos extends Component {
           tempMap.set(toDoItem._id, toDoItem);
         });
         this.setState({
-          toDos: tempMap
+          toDos: tempMap,
+          isLoading: false
         });
       });
   }
@@ -151,7 +153,7 @@ class ToDos extends Component {
             </div>
           ) : (
             <div className="toDoContainer noToDos">
-              {this.state.toDos.size === 0
+              {this.state.toDos.size === 0 && this.state.isLoading === false
                 ? "You don't have any ToDos yet"
                 : "Loading"}
             </div>
