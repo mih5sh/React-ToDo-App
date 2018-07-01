@@ -152,7 +152,7 @@ class ToDos extends Component {
           ) : (
             <div className="toDoContainer noToDos">
               {this.state.toDos.size === 0
-                ? "You don't have any notifications yet"
+                ? "You don't have any ToDos yet"
                 : "Loading"}
             </div>
           )}
