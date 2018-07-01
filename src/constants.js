@@ -1,5 +1,5 @@
 module.exports = {
-  BACKEND_URL: "http://localhost:3000/",
+  BACKEND_URL: "https://degrassi-goose-93277.herokuapp.com/",
   LOGIN_ENDPOINT: "login",
   ADD_TO_DO_ENDPOINT: "newToDo",
   GET_TO_DOS_ENDPOINT: "getToDos",
