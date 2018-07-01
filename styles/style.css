@@ -1,0 +1,143 @@
+.logInContainer {
+  display: flex;
+  flex-direction: column;
+  max-width: max-content;
+  margin: 100px auto;
+  justify-content: center;
+  align-items: center;
+}
+
+.userInput {
+  border: none;
+  margin: 10px;
+  font-size: 2rem;
+  font-weight: 200;
+  text-align: center;
+  border-bottom: 0.01rem solid gray;
+  flex: 1;
+  max-height: max-content;
+}
+
+.userInput:focus {
+  border-bottom-color: black;
+  outline: none;
+}
+
+.buttonsContainer {
+  display: flex;
+}
+
+.actionButtons {
+  margin: 10px;
+  font-size: 1.5rem;
+  max-width: max-content;
+  font-weight: 400;
+  background-color: #3897f0;
+  border-radius: 5px;
+  color: white;
+  flex: 1;
+  cursor: pointer;
+}
+
+.error {
+  color: red;
+  font-weight: 400;
+}
+
+.toDoInput {
+  border: none;
+  margin: 10px auto;
+  font-size: 2rem;
+  font-weight: 200;
+  text-align: center;
+  border-bottom: 0.01rem solid gray;
+  transition: all 0.2s ease;
+}
+
+.toDoInput:focus {
+  border-bottom-color: black;
+  outline: none;
+  font-weight: 400;
+}
+
+.greetingsContainer {
+  font-weight: 200;
+  margin: 25px auto;
+  width: max-content;
+}
+.username {
+  font-size: 2rem;
+  font-weight: 400;
+  display: block;
+  margin-bottom: 10px;
+  text-align: center;
+}
+.greetings {
+  font-size: 1.5rem;
+  font-weight: 300;
+  display: block;
+  text-align: center;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.toDoContainer {
+  width: 60%;
+  max-width: 70%;
+  margin: 50px auto;
+  border: 0.5px solid black;
+  border-radius: 5px;
+  padding: 10px;
+  transition: all 0.1s ease;
+}
+
+.toDoContainer input {
+  margin: 0px 10px;
+}
+
+.toDoItemContainer {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #f1f1f1;
+}
+
+.toDoItemContainer:last-child {
+  border-bottom: 0px;
+}
+
+.toDoItemContainer span {
+  padding: 10px;
+  flex: 1;
+  border-left: 1px solid #d1e2ff;
+  border-right: 1px solid #d1e2ff;
+  word-wrap: break-word;
+  overflow: auto;
+  margin: 0px;
+}
+
+.toDoItemContainer button {
+  border: none;
+  transition: all 0.25s;
+  color: gray;
+  margin: 0px 10px;
+}
+
+.toDoItemContainer button:hover {
+  color: black;
+  transform: scale(1.5);
+}
+
+.toDoItemDone {
+  background-color: #f9f9f9;
+  text-decoration: line-through;
+  color: #696969;
+}
+
+.noToDos {
+  margin: 50px auto;
+  font-size: 2rem;
+  text-align: center;
+}
