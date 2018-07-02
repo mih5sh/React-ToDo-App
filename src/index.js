@@ -1,10 +1,10 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { BrowserRouter, Route } from "react-router-dom";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { BrowserRouter, Route } from 'react-router-dom';
 
-import LogIn from "./loginPage";
-import ToDos from "./todos";
-import SignUp from "./signupPage";
+import LogIn from './loginPage';
+import ToDos from './todos';
+import SignUp from './signupPage';
 
 function App() {
   return (
@@ -18,5 +18,5 @@ function App() {
   );
 }
 
-const rootElement = document.getElementById("root");
+const rootElement = document.getElementById('root');
 ReactDOM.render(<App />, rootElement);

@@ -1,16 +1,17 @@
-import React, { Component } from "react";
-import { GreetWithoutLogIn, Greet } from "./greetings";
-import AddToDo from "./addToDo";
+import React, { Component } from 'react';
+import { GreetWithoutLogIn, Greet } from './greetings';
+import { fetchToDos } from './helpers/fetchToDos';
+import AddToDo from './addToDo';
 import {
   BACKEND_URL,
   ADD_TO_DO_ENDPOINT,
   GET_TO_DOS_ENDPOINT,
   CHANGE_STATUS_OF_TODOS_ENDPOINT,
   DELETE_TODO_ENDPOINT
-} from "./constants";
-import ToDoItem from "./toDoItem";
+} from './constants';
+import ToDoItem from './toDoItem';
 
-import "../styles/style.css";
+import '../styles/style.css';
 
 class ToDos extends Component {
   constructor() {
@@ -19,7 +20,7 @@ class ToDos extends Component {
   }
   state = {
     toDos: new Map(),
-    notification: "Loading",
+    notification: 'Loading',
     isLoading: true
   };
   componentWillMount() {
@@ -32,43 +33,26 @@ class ToDos extends Component {
       return;
     }
     /* Fetch all the ToDos */
-    fetch(BACKEND_URL + GET_TO_DOS_ENDPOINT, {
-      method: "POST",
-      body: JSON.stringify({
-        userId: this.userDetails.userId
-      }),
-      headers: {
-        "Content-Type": "application/json"
-      }
-    })
-      .then(response => response.json())
-      .then(({ response }) => {
-        let tempMap = new Map();
-        response.forEach(toDoItem => {
-          tempMap.set(toDoItem._id, toDoItem);
-        });
-        this.setState({
-          toDos: tempMap,
-          isLoading: false
-        });
-      });
+    fetchToDos(this.userDetails.userId).then(byIdToDoMap => {
+      this.setState({ toDos: byIdToDoMap, isLoading: false });
+    });
   }
   addToDo = toDoItem => {
     /* Add ToDo in the backend and the state */
     fetch(BACKEND_URL + ADD_TO_DO_ENDPOINT, {
-      method: "POST",
+      method: 'POST',
       body: JSON.stringify({
         userId: toDoItem.userId,
         itemName: toDoItem.itemName,
         done: toDoItem.false
       }),
       headers: {
-        "Content-Type": "application/json"
+        'Content-Type': 'application/json'
       }
     })
       .then(response => response.json())
       .then(({ response, newToDo }) => {
-        if (response === "Added") {
+        if (response === 'Added') {
           this.setState(({ toDos }) => {
             toDos.set(newToDo._id, newToDo);
             return {
@@ -94,13 +78,13 @@ class ToDos extends Component {
       };
     });
     fetch(BACKEND_URL + CHANGE_STATUS_OF_TODOS_ENDPOINT, {
-      method: "POST",
+      method: 'POST',
       body: JSON.stringify({
         _id: toDoItemId,
         done: !previousStatus
       }),
       headers: {
-        "Content-Type": "application/json"
+        'Content-Type': 'application/json'
       }
     })
       .then(res => res.json())
@@ -117,12 +101,12 @@ class ToDos extends Component {
       };
     });
     fetch(BACKEND_URL + DELETE_TODO_ENDPOINT, {
-      method: "DELETE",
+      method: 'DELETE',
       body: JSON.stringify({
         _id: toDoItemId
       }),
       headers: {
-        "Content-Type": "application/json"
+        'Content-Type': 'application/json'
       }
     })
       .then(res => res.json())
@@ -155,7 +139,7 @@ class ToDos extends Component {
             <div className="toDoContainer noToDos">
               {this.state.toDos.size === 0 && this.state.isLoading === false
                 ? "You don't have any ToDos yet"
-                : "Loading"}
+                : 'Loading'}
             </div>
           )}
         </div>
