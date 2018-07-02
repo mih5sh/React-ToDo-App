@@ -1,7 +1,6 @@
 import { BACKEND_URL, GET_TO_DOS_ENDPOINT } from '../constants';
 async function fetchToDos(userId) {
-  const byIdMap = new Map();
-  fetch(BACKEND_URL + GET_TO_DOS_ENDPOINT, {
+  const byIdToDoMap = await fetch(BACKEND_URL + GET_TO_DOS_ENDPOINT, {
     method: 'POST',
     body: JSON.stringify({
       _id: userId
@@ -12,11 +11,13 @@ async function fetchToDos(userId) {
   })
     .then(response => response.json())
     .then(({ response }) => {
+      const byIdMap = new Map();
       response.forEach(toDoItem => {
         return byIdMap.set(toDoItem._id, toDoItem);
       });
+      return byIdMap;
     });
-  return byIdMap;
+  return byIdToDoMap;
 }
 
 module.exports = {

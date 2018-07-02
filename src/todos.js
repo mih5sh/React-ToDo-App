@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { GreetWithoutLogIn, Greet } from './greetings';
 import { fetchToDos } from './helpers/fetchToDos';
+import { addToDoInDBHelper } from './helpers/addToDoHelper';
 import AddToDo from './addToDo';
 import {
   BACKEND_URL,
@@ -18,16 +19,19 @@ class ToDos extends Component {
     super();
     let userDetails;
   }
+
   state = {
     toDos: new Map(),
     notification: 'Loading',
     isLoading: true
   };
+
   componentWillMount() {
     this.userDetails = this.props.location
       ? this.props.location.userDetails
       : undefined;
   }
+
   componentDidMount() {
     if (this.userDetails === undefined) {
       return;
@@ -37,35 +41,22 @@ class ToDos extends Component {
       this.setState({ toDos: byIdToDoMap, isLoading: false });
     });
   }
+
   addToDo = toDoItem => {
     /* Add ToDo in the backend and the state */
-    fetch(BACKEND_URL + ADD_TO_DO_ENDPOINT, {
-      method: 'POST',
-      body: JSON.stringify({
-        userId: toDoItem.userId,
-        itemName: toDoItem.itemName,
-        done: toDoItem.false
-      }),
-      headers: {
-        'Content-Type': 'application/json'
+    addToDoInDBHelper(toDoItem).then(newToDoItem => {
+      if (newToDoItem) {
+        this.setState(({ toDos, notification }) => {
+          toDos.set(newToDoItem._id, newToDoItem);
+          return {
+            toDos: toDos,
+            notification: `Added: ${newToDoItem.itemName}`
+          };
+        });
+      } else {
+        this.setState({ notification: `Couldn't add: ${toDoItem.itemName}` });
       }
-    })
-      .then(response => response.json())
-      .then(({ response, newToDo }) => {
-        if (response === 'Added') {
-          this.setState(({ toDos }) => {
-            toDos.set(newToDo._id, newToDo);
-            return {
-              toDos: toDos,
-              notification: `${response} ${newToDo.itemName}`
-            };
-          });
-        } else {
-          this.setState({
-            notification: `${response}`
-          });
-        }
-      });
+    });
   };
 
   changeStatusOfToDo = (toDoItemId, previousStatus) => {

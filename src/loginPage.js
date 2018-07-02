@@ -1,14 +1,16 @@
-import React, { Component } from "react";
-import { BACKEND_URL, LOGIN_ENDPOINT } from "./constants";
-import { Redirect } from "react-router-dom";
-import "../styles/style.css";
+import React, { Component } from 'react';
+import { BACKEND_URL, LOGIN_ENDPOINT } from './constants';
+import { logInHelper } from './helpers/logInHelper';
+import { Redirect } from 'react-router-dom';
+import '../styles/style.css';
 
 class LogIn extends Component {
   state = {
-    logInError: "",
+    logInError: '',
     loggedIn: false,
-    userName: "",
-    userId: "",
+    userName: '',
+    userId: '',
+    loggingIn: false,
     signingUp: false
   };
 
@@ -19,49 +21,37 @@ class LogIn extends Component {
   logIn = () => {
     const userName = this.usernameNode.value;
     const password = this.passwordNode.value;
-    fetch(BACKEND_URL + LOGIN_ENDPOINT, {
-      method: "POST",
-      body: JSON.stringify({
-        userName,
-        password
-      }),
-      headers: {
-        "Content-Type": "application/json"
+    logInHelper(userName, password).then(({ response, userId }) => {
+      if (userId) {
+        this.setState({
+          loggedIn: true,
+          userName: userName,
+          userId: userId
+        });
+      } else {
+        this.setState({ logInError: response, loggingIn: false });
+        this.passwordNode.value = '';
+        this.usernameNode.value = '';
       }
-    })
-      .then(response => response.json())
-      .then(jsonRes => {
-        console.log(jsonRes);
-        if (jsonRes.response === "LoggedIn") {
-          console.log("Should be redirected!");
-          this.setState({
-            loggedIn: true,
-            userName: userName,
-            userId: jsonRes.userId
-          });
-        } else {
-          this.setState({ logInError: jsonRes.response });
-          this.passwordNode.value = "";
-          this.usernameNode.value = "";
-        }
-      });
+    });
+    this.setState({ loggingIn: true });
   };
 
   handleLogInByEnterKey = event => {
-    if (event.key !== "Enter") {
+    if (event.key !== 'Enter') {
       return;
     }
     this.logIn();
   };
 
   removePlaceHolderText = event => {
-    event.target.placeholder = "";
+    event.target.placeholder = '';
   };
   addPlaceHolderText = event => {
     if (event.target === this.usernameNode) {
-      event.target.placeholder = "Enter Username";
+      event.target.placeholder = 'Enter Username';
     } else if (event.target === this.passwordNode) {
-      event.target.placeholder = "Enter Password";
+      event.target.placeholder = 'Enter Password';
     }
   };
 
@@ -71,7 +61,7 @@ class LogIn extends Component {
       return (
         <Redirect
           to={{
-            pathname: "/todos",
+            pathname: '/todos',
             userDetails: {
               userName: userName,
               userId: userId
@@ -83,7 +73,7 @@ class LogIn extends Component {
       return (
         <Redirect
           to={{
-            pathname: "/signup"
+            pathname: '/signup'
           }}
         />
       );
@@ -91,7 +81,7 @@ class LogIn extends Component {
   };
 
   render() {
-    const { logInError } = this.state;
+    const { logInError, loggingIn } = this.state;
     return (
       <div className="logInContainer">
         {this.renderRedirect()}
@@ -120,7 +110,10 @@ class LogIn extends Component {
             Sign Up
           </button>
         </div>
-        {logInError ? <h3 className="error">{logInError}</h3> : null}
+        {logInError && !loggingIn ? (
+          <h3 className="error">{logInError}</h3>
+        ) : null}
+        {loggingIn ? <h3>Loading</h3> : null}
       </div>
     );
   }
