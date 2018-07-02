@@ -2,24 +2,14 @@ import React, { Component } from 'react';
 import { GreetWithoutLogIn, Greet } from './greetings';
 import { fetchToDos } from './helpers/fetchToDos';
 import { addToDoInDBHelper } from './helpers/addToDoHelper';
+import { changeStatusOfToDoHelper } from './helpers/changeStatusHelper';
+import { deleteToDoHelper } from './helpers/deleteToDoHelper';
 import AddToDo from './addToDo';
-import {
-  BACKEND_URL,
-  ADD_TO_DO_ENDPOINT,
-  GET_TO_DOS_ENDPOINT,
-  CHANGE_STATUS_OF_TODOS_ENDPOINT,
-  DELETE_TODO_ENDPOINT
-} from './constants';
 import ToDoItem from './toDoItem';
 
-import '../styles/style.css';
+import './styles/style.css';
 
 class ToDos extends Component {
-  constructor() {
-    super();
-    let userDetails;
-  }
-
   state = {
     toDos: new Map(),
     notification: 'Loading',
@@ -59,29 +49,22 @@ class ToDos extends Component {
     });
   };
 
-  changeStatusOfToDo = (toDoItemId, previousStatus) => {
+  changeStatusOfToDo = (toDoItemId, currentStatus) => {
+    /* Change status of ToDo in the backend and the state */
     this.setState(({ toDos }) => {
       const toDoToUpdate = toDos.get(toDoItemId);
-      previousStatus = toDoToUpdate.done;
-      toDoToUpdate.done = !toDoToUpdate.done;
+      toDoToUpdate.done = !currentStatus;
       return {
         toDos: toDos
       };
     });
-    fetch(BACKEND_URL + CHANGE_STATUS_OF_TODOS_ENDPOINT, {
-      method: 'POST',
-      body: JSON.stringify({
-        _id: toDoItemId,
-        done: !previousStatus
-      }),
-      headers: {
-        'Content-Type': 'application/json'
+    changeStatusOfToDoHelper(toDoItemId, currentStatus).then(
+      ({ response, updatedToDo }) => {
+        this.setState({
+          notification: response
+        });
       }
-    })
-      .then(res => res.json())
-      .then(({ response, toDoToUpdate }) => {
-        this.setState({ notification: `${response}` });
-      });
+    );
   };
 
   deleteToDo = toDoItemId => {
@@ -91,17 +74,9 @@ class ToDos extends Component {
         toDos: toDos
       };
     });
-    fetch(BACKEND_URL + DELETE_TODO_ENDPOINT, {
-      method: 'DELETE',
-      body: JSON.stringify({
-        _id: toDoItemId
-      }),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-      .then(res => res.json())
-      .then(jsonRes => console.log(jsonRes));
+    deleteToDoHelper(toDoItemId).then(response => {
+      this.setState({ notification: response });
+    });
   };
 
   render() {

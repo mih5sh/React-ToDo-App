@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import "../styles/style.css";
+import React, { Component } from 'react';
+import './styles/style.css';
 
 class ToDoItem extends Component {
   deleteToDoItem = () => {
@@ -21,7 +21,7 @@ class ToDoItem extends Component {
           defaultChecked={done}
           onChange={this.changeStatusOfToDo}
         />
-        <span className={done ? "toDoItemDone" : ""}>{itemName}</span>
+        <span className={done ? 'toDoItemDone' : ''}>{itemName}</span>
         <button onClick={this.deleteToDoItem} children="X" />
       </div>
     );

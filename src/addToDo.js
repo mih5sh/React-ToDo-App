@@ -1,14 +1,14 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
-import "../styles/style.css";
+import './styles/style.css';
 
 class AddToDo extends Component {
   handleKeyDown = e => {
-    if (e.key !== "Enter") {
+    if (e.key !== 'Enter') {
       return;
     }
     const toDoItemName = this.addToDoNode.value;
-    if (toDoItemName === "") {
+    if (toDoItemName === '') {
       return;
     }
     const newToDoItem = {
@@ -16,7 +16,7 @@ class AddToDo extends Component {
       itemName: toDoItemName,
       done: false
     };
-    this.addToDoNode.value = "";
+    this.addToDoNode.value = '';
     this.props.addToDo(newToDoItem);
   };
 
@@ -24,7 +24,7 @@ class AddToDo extends Component {
     return (
       <input
         className="toDoInput"
-        placeholder={"New To-Do"}
+        placeholder={'New To-Do'}
         onKeyDown={this.handleKeyDown}
         ref={node => (this.addToDoNode = node)}
       />

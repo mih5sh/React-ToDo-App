@@ -1,28 +1,28 @@
-import React, { Component } from "react";
-import { BACKEND_URL, SIGNUP_ENDPOINT } from "./constants";
-import { Redirect } from "react-router-dom";
-import "../styles/style.css";
+import React, { Component } from 'react';
+import { BACKEND_URL, SIGNUP_ENDPOINT } from './constants';
+import { Redirect } from 'react-router-dom';
+import './styles/style.css';
 
 class SignUp extends Component {
   state = {
-    signUpError: "",
+    signUpError: '',
     signedUp: false,
-    userName: "",
-    userId: ""
+    userName: '',
+    userId: ''
   };
   signUp = () => {
     const userName = this.usernameNode.value;
     const name = this.fullNameNode.value;
     const password = this.passwordNode.value;
     fetch(BACKEND_URL + SIGNUP_ENDPOINT, {
-      method: "POST",
+      method: 'POST',
       body: JSON.stringify({
         userName,
         password,
         name
       }),
       headers: {
-        "Content-Type": "application/json"
+        'Content-Type': 'application/json'
       }
     })
       .then(response => {
@@ -37,28 +37,28 @@ class SignUp extends Component {
           });
         } else {
           this.setState({ signUpError: response });
-          this.passwordNode.value = "";
-          this.usernameNode.value = "";
-          this.fullNameNode.value = "";
+          this.passwordNode.value = '';
+          this.usernameNode.value = '';
+          this.fullNameNode.value = '';
         }
       });
   };
   handleEnterKeyForSignUp = event => {
-    if (event.key !== "Enter") {
+    if (event.key !== 'Enter') {
       return;
     }
     this.signUp();
   };
   removePlaceHolderText = event => {
-    event.target.placeholder = "";
+    event.target.placeholder = '';
   };
   addPlaceHolderText = event => {
     if (event.target === this.usernameNode) {
-      event.target.placeholder = "Enter Username";
+      event.target.placeholder = 'Enter Username';
     } else if (event.target === this.fullNameNode) {
-      event.target.placeholder = "Enter Fullname";
+      event.target.placeholder = 'Enter Fullname';
     } else if (event.target === this.passwordNode) {
-      event.target.placeholder = "Enter Password";
+      event.target.placeholder = 'Enter Password';
     }
   };
   renderRedirect = () => {
@@ -66,7 +66,7 @@ class SignUp extends Component {
       return (
         <Redirect
           to={{
-            pathname: "/todos",
+            pathname: '/todos',
             userDetails: {
               userName: this.state.userName,
               userId: this.state.userId

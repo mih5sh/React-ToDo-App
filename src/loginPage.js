@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { BACKEND_URL, LOGIN_ENDPOINT } from './constants';
 import { logInHelper } from './helpers/logInHelper';
 import { Redirect } from 'react-router-dom';
-import '../styles/style.css';
+import './styles/style.css';
 
 class LogIn extends Component {
   state = {
